@@ -2,7 +2,7 @@ import React from "react";
 import AppNetflix from "./pages/AppNetflix";
 
 export default function App() {
-  return (
+  return (  
     <div>
       <AppNetflix/>
     </div>

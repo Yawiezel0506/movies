@@ -84,7 +84,7 @@ export default function SignUp() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.div`  
   position: relative;
   .contant {
     position: absolute;

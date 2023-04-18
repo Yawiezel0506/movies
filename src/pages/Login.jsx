@@ -6,7 +6,7 @@ import styled from "styled-components";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
-
+  
 export default function Login() {
   const [formValues, setFormValues] = useState({
     email: "",
