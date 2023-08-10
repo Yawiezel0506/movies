@@ -8,31 +8,33 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovies, getGenres } from "../store";
+import Slider from "../components/Slider";
 
 export default function Netflix() {
-
-  const navigate = useNavigate()
   const [isScrolled, setIsScrolled] = useState(false);
+  
+  const genresLoaded = useSelector((state) => state.netflix.genresLoaded);
+  const movies = useSelector((state) => state.netflix.movies);
+  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const genresLoaded = useSelector(state => state.netflix.genresLoaded)
-  const movies = useSelector(state => state.netflix.movies)
+  useEffect(() => {
+    dispatch(getGenres());
+  });
 
-  const dispatch = useDispatch()
-
-  useEffect(()=>{
-    dispatch(getGenres())
-  },[])
-
-  useEffect(()=> {
-    genresLoaded && dispatch(fetchMovies({type: 'all'}))
-  })
+  useEffect(() => {
+    if (genresLoaded && movies.length === 0) {
+      dispatch(fetchMovies({ type: "all" }));
+    }
+  }, [genresLoaded, movies]);
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);
   };
 
-  // console.log(movies);
+  console.log(movies);
 
   return (
     <Container>
@@ -48,7 +50,10 @@ export default function Netflix() {
             <img src={MovieLogo} alt="movie-logo" />
           </div>
           <div className="buttons flex">
-            <button className="flex a-center j-center" onClick={()=> navigate('/player')}>
+            <button
+              className="flex a-center j-center"
+              onClick={() => navigate("/player")}
+            >
               <FaPlay />
               Play
             </button>
@@ -59,6 +64,7 @@ export default function Netflix() {
           </div>
         </div>
       </div>
+      <Slider movies={movies}/>
     </Container>
   );
 }
@@ -101,7 +107,7 @@ const Container = styled.div`
             opacity: 0.8;
           }
           &:nth-of-type(2) {
-            background: rgba(109,109,110,0.7);
+            background: rgba(109, 109, 110, 0.7);
             color: white;
             svg {
               font-size: 1.8rem;
